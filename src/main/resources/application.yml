@@ -1,0 +1,12 @@
+spring.application.name: udemy-springboot-hacking-course
+server:
+  port: 8080
+
+com:
+  ka:
+    udemycourse:
+      mariadb:
+        jdbcUrl: "jdbc:mariadb://localhost:3306/udemy_course"
+        username: "root"
+        password: "root" #normally you would never store a password in plain text like this but this is a local mariadb for demonstrative purposes only
+
