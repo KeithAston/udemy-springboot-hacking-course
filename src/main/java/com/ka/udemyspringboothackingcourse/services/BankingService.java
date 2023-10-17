@@ -11,7 +11,7 @@ import java.sql.*;
 @Service
 @AllArgsConstructor
 @CommonsLog
-public class BalanceInquiryService {
+public class BankingService {
 
     private MariaDBConfig mariaDBConfig;
 
