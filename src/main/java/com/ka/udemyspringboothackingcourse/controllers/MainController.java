@@ -1,13 +1,15 @@
 package com.ka.udemyspringboothackingcourse.controllers;
 
 import com.ka.udemyspringboothackingcourse.models.User;
-import com.ka.udemyspringboothackingcourse.services.BalanceInquiryService;
+import com.ka.udemyspringboothackingcourse.services.BankingService;
+import com.ka.udemyspringboothackingcourse.services.DNSLookupService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 @RestController
@@ -15,20 +17,21 @@ import java.sql.SQLException;
 @AllArgsConstructor
 public class MainController {
 
-    private BalanceInquiryService balanceInquiryService;
+    private BankingService bankingService;
+    private DNSLookupService dnsLookupService;
 
     //SQL Injection Endpoint
     @GetMapping("/balance/inquiry")
     public ResponseEntity<String> getBalance(@RequestParam("username") String username,
                                             @RequestParam("password") String password) throws SQLException {
-        return new ResponseEntity<>(balanceInquiryService.getBalance(username,password), HttpStatus.OK);
+        return new ResponseEntity<>(bankingService.getBalance(username,password), HttpStatus.OK);
     }
 
     //Command Execution Endpoint
     @GetMapping("/DNS/lookup")
-    public ResponseEntity<String> getDNSInformation(@RequestHeader HttpHeaders httpHeaders) {
+    public ResponseEntity<String> getDNSInformation(@RequestHeader HttpHeaders httpHeaders) throws IOException {
         String dns = httpHeaders.getFirst("DNS");
-        return new ResponseEntity<>("Received DNS lookup request for " + dns, HttpStatus.OK);
+        return new ResponseEntity<>("Received DNS lookup request for " + dnsLookupService.getDNS(dns), HttpStatus.OK);
     }
 
     //Privilege Escalation Endpoint No.1
