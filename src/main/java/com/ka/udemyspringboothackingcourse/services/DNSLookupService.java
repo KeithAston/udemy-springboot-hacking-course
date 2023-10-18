@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,16 +14,13 @@ import java.util.stream.Collectors;
 public class DNSLookupService {
 
     public String getDNS(String domain) throws IOException {
-
         ProcessBuilder builder = new ProcessBuilder();
         builder.command("cmd.exe", "/c", "nslookup " + domain);
         builder.directory(new File(System.getProperty("user.home")));
         Process process = builder.start();
-        StreamGobbler streamGobbler =
-                new StreamGobbler(process.getInputStream(), System.out::println);
 
         List<String> output = readOutput(process.getInputStream());
-        return output.toString();
+        return formatOutput(output);
 
     }
 
@@ -35,22 +31,12 @@ public class DNSLookupService {
         }
     }
 
-    private static class StreamGobbler implements Runnable {
-        private InputStream inputStream;
-        private Consumer<String> consumer;
-
-        public StreamGobbler(InputStream inputStream, Consumer<String> consumer) {
-            this.inputStream = inputStream;
-            this.consumer = consumer;
+    private String formatOutput(List<String> output) {
+        StringBuilder sb = new StringBuilder();
+        for (String out: output) {
+            sb.append("\n");
+            sb.append(out);
         }
-
-        @Override
-        public void run() {
-            new BufferedReader(new InputStreamReader(inputStream)).lines()
-                    .forEach(consumer);
-        }
+        return sb.toString();
     }
-
-
-
 }
