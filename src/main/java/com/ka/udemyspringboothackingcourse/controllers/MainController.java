@@ -31,7 +31,7 @@ public class MainController {
     @GetMapping("/DNS/lookup")
     public ResponseEntity<String> getDNSInformation(@RequestHeader HttpHeaders httpHeaders) throws IOException {
         String dns = httpHeaders.getFirst("DNS");
-        return new ResponseEntity<>("Received DNS lookup request for " + dnsLookupService.getDNS(dns), HttpStatus.OK);
+        return new ResponseEntity<>("DNS lookup results for " + dns + dnsLookupService.getDNS(dns), HttpStatus.OK);
     }
 
     //Privilege Escalation Endpoint No.1
