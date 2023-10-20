@@ -1,7 +1,9 @@
 package com.ka.udemyspringboothackingcourse.services;
 
+import com.ka.udemyspringboothackingcourse.helpers.MainHelper;
 import com.ka.udemyspringboothackingcourse.integrators.MariaDBIntegrator;
 import com.ka.udemyspringboothackingcourse.models.User;
+import com.sun.tools.javac.Main;
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;
@@ -28,10 +30,10 @@ public class CustomerLookupService {
                     if (results.next()){
                         User user = new User();
                         user.setUserId(userId);
-                        user.setName(results.getString("Username"));
-                        user.setUserType(results.getString("userType"));
-                        user.setAddress(results.getString("address"));
-                        user.setContactNumber(results.getString("contact_number"));
+                        user.setName(results.getString(MainHelper.USERNAME_COLUMN_HEADER));
+                        user.setUserType(results.getString(MainHelper.USERTYPE_COLUMN_HEADER));
+                        user.setAddress(results.getString(MainHelper.ADDRESS_COLUMN_HEADER));
+                        user.setContactNumber(results.getString(MainHelper.CONTACT_NUMBER_COLUMN_HEADER));
                         return user.toString();
 
                     } else {
@@ -41,13 +43,11 @@ public class CustomerLookupService {
                     log.error("Problem with SQL syntax, please try again : " + se.getMessage());
                     return "sql";
                 } catch (Exception e) {
-                    log.error("Exception caught : " + e.getMessage());
-                    return null;
+                    log.error(MainHelper.EXCEPTION_OPENER + e.getMessage());
+                    return "Something went wrong. Please try again later";
                 }
             }
         }
         return "Please check provided cookies for syntax errors";
-
-
     }
 }

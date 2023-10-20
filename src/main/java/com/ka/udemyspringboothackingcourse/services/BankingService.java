@@ -1,6 +1,7 @@
 package com.ka.udemyspringboothackingcourse.services;
 
 import com.ka.udemyspringboothackingcourse.configuration.MariaDBConfig;
+import com.ka.udemyspringboothackingcourse.helpers.MainHelper;
 import com.ka.udemyspringboothackingcourse.integrators.MariaDBIntegrator;
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
@@ -24,14 +25,14 @@ public class BankingService {
             if (results.next()){
                     balance = results.getDouble("balance");
             } else {
-                return "Bad Credentials";
+                return MainHelper.BAD_CREDENTIALS;
             }
             return "Balance for " + username + " : €" + balance;
         } catch (SQLException se) {
             log.error("Problem with SQL syntax, please try again : " + se.getMessage());
-            return "Bad Credentials";
+            return MainHelper.BAD_CREDENTIALS;
         } catch (Exception e) {
-            log.error("Exception caught : " + e.getMessage());
+            log.error(MainHelper.EXCEPTION_OPENER + e.getMessage());
             return null;
         }
     }
