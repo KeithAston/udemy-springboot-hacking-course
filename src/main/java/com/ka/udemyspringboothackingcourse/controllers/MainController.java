@@ -2,6 +2,7 @@ package com.ka.udemyspringboothackingcourse.controllers;
 
 import com.ka.udemyspringboothackingcourse.models.User;
 import com.ka.udemyspringboothackingcourse.services.BankingService;
+import com.ka.udemyspringboothackingcourse.services.CustomerLookupService;
 import com.ka.udemyspringboothackingcourse.services.DNSLookupService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -19,12 +20,20 @@ public class MainController {
 
     private BankingService bankingService;
     private DNSLookupService dnsLookupService;
+    private CustomerLookupService customerLookupService;
 
     //SQL Injection Endpoint
     @GetMapping("/balance/inquiry")
     public ResponseEntity<String> getBalance(@RequestParam("username") String username,
                                             @RequestParam("password") String password) throws SQLException {
-        return new ResponseEntity<>(bankingService.getBalance(username,password), HttpStatus.OK);
+        String response = bankingService.getBalance(username, password);
+        if (response.equals("Bad Credentials")) {
+            return new ResponseEntity<>("Problem with provided credentials, please check and try again", HttpStatus.BAD_REQUEST);
+        } else if (response != null) {
+            return new ResponseEntity<>(bankingService.getBalance(username,password), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Something went wrong. Service temporarily unavailable", HttpStatus.SERVICE_UNAVAILABLE);
+        }
     }
 
     //Command Execution Endpoint
@@ -37,7 +46,12 @@ public class MainController {
     //Privilege Escalation Endpoint No.1
     @GetMapping("/customer/lookup")
     public ResponseEntity<String> getUserInfo(@RequestHeader HttpHeaders httpHeaders){
-        return new ResponseEntity<>("User Id : " + httpHeaders.get("Cookie"), HttpStatus.OK);
+        if (httpHeaders.containsKey("Cookie")) {
+            return new ResponseEntity<>(customerLookupService.getUser(httpHeaders.get("Cookie")), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Please provide Cookie in header of request", HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     //Privilege Escalation Endpoint No.2
