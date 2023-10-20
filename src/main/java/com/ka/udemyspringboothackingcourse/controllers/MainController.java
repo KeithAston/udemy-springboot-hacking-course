@@ -1,5 +1,6 @@
 package com.ka.udemyspringboothackingcourse.controllers;
 
+import com.ka.udemyspringboothackingcourse.helpers.MainHelper;
 import com.ka.udemyspringboothackingcourse.models.User;
 import com.ka.udemyspringboothackingcourse.services.BankingService;
 import com.ka.udemyspringboothackingcourse.services.CustomerLookupService;
@@ -27,7 +28,7 @@ public class MainController {
     public ResponseEntity<String> getBalance(@RequestParam("username") String username,
                                             @RequestParam("password") String password) throws SQLException {
         String response = bankingService.getBalance(username, password);
-        if (response.equals("Bad Credentials")) {
+        if (response.equals(MainHelper.BAD_CREDENTIALS)) {
             return new ResponseEntity<>("Problem with provided credentials, please check and try again", HttpStatus.BAD_REQUEST);
         } else if (response != null) {
             return new ResponseEntity<>(bankingService.getBalance(username,password), HttpStatus.OK);
@@ -51,7 +52,6 @@ public class MainController {
         } else {
             return new ResponseEntity<>("Please provide Cookie in header of request", HttpStatus.BAD_REQUEST);
         }
-
     }
 
     //Privilege Escalation Endpoint No.2
