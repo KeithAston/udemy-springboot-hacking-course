@@ -9,10 +9,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -46,11 +48,12 @@ public class MainController {
 
     //Privilege Escalation Endpoint No.1
     @GetMapping("/customer/lookup")
-    public ResponseEntity<String> getUserInfo(@RequestHeader HttpHeaders httpHeaders){
+    public ResponseEntity<String> getUserInfo(@RequestHeader HttpHeaders httpHeaders) {
         if (httpHeaders.containsKey("Cookie")) {
             return new ResponseEntity<>(customerLookupService.getUser(httpHeaders.get("Cookie")), HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Please provide Cookie in header of request", HttpStatus.BAD_REQUEST);
+
         }
     }
 
@@ -58,7 +61,11 @@ public class MainController {
     @PostMapping("/customer/set")
     public ResponseEntity<String> setUserInfo(@RequestHeader HttpHeaders httpHeaders,
                                                   @RequestBody User user){
-        return new ResponseEntity<>("Successfully updated user info ", HttpStatus.OK);
+        if (httpHeaders.containsKey("Cookie")) {
+            return new ResponseEntity<>(customerLookupService.setUserInfo(user, httpHeaders.get("Cookie")), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Please provide Cookie in header of request", HttpStatus.BAD_REQUEST);
+        }
     }
 
     //Broken Access Control Endpoint

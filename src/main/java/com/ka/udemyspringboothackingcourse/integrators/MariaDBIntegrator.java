@@ -1,6 +1,7 @@
 package com.ka.udemyspringboothackingcourse.integrators;
 
 import com.ka.udemyspringboothackingcourse.configuration.MariaDBConfig;
+import com.ka.udemyspringboothackingcourse.models.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,7 @@ public class MariaDBIntegrator {
     private MariaDBConfig mariaDBConfig;
 
     public ResultSet getBalance(String username, String password) throws SQLException {
-        Connection conn = DriverManager.getConnection(mariaDBConfig.getJdbcUrl(),
-                mariaDBConfig.getUsername(), mariaDBConfig.getPassword());
+        Connection conn = getMariaDBConnection();
         Statement stmt = conn.createStatement();
         String sql = "SELECT * FROM abc_bank_users WHERE Username ='" + username + "' and password = '"
                 + password + "'";
@@ -25,12 +25,28 @@ public class MariaDBIntegrator {
     }
 
     public ResultSet getUser(int userId) throws SQLException {
-        Connection conn = DriverManager.getConnection(mariaDBConfig.getJdbcUrl(),
-                mariaDBConfig.getUsername(), mariaDBConfig.getPassword());
+        Connection conn = getMariaDBConnection();
         Statement stmt = conn.createStatement();
         String sql = "select * from user_information where userid=" + userId;
 
         return stmt.executeQuery(sql);
     }
+
+    public void setUser(User user) throws SQLException {
+        Connection conn = getMariaDBConnection();
+        Statement stmt = conn.createStatement();
+        String sql = "UPDATE user_information SET Username = '" + user.getName() + "', contact_number = '"
+                    + user.getContactNumber() + "', userType = '" + user.getUserType() + "', address = '"
+                    + user.getAddress() + "' WHERE userid = " + user.getUserId() + ";";
+        log.info("Sql statement : " + sql);
+        stmt.executeQuery(sql);
+    }
+
+    private Connection getMariaDBConnection() throws SQLException {
+        return DriverManager.getConnection(mariaDBConfig.getJdbcUrl(),
+                mariaDBConfig.getUsername(), mariaDBConfig.getPassword());
+    }
+
+
 
 }
