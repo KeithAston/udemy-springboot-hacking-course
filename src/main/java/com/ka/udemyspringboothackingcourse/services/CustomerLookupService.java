@@ -3,7 +3,6 @@ package com.ka.udemyspringboothackingcourse.services;
 import com.ka.udemyspringboothackingcourse.helpers.MainHelper;
 import com.ka.udemyspringboothackingcourse.integrators.MariaDBIntegrator;
 import com.ka.udemyspringboothackingcourse.models.User;
-import com.sun.tools.javac.Main;
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;

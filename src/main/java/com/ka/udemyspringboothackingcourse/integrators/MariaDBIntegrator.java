@@ -38,15 +38,21 @@ public class MariaDBIntegrator {
         String sql = "UPDATE user_information SET Username = '" + user.getName() + "', contact_number = '"
                     + user.getContactNumber() + "', userType = '" + user.getUserType() + "', address = '"
                     + user.getAddress() + "' WHERE userid = " + user.getUserId() + ";";
-        log.info("Sql statement : " + sql);
         stmt.executeQuery(sql);
     }
+
+    public ResultSet getEarningsReport(String reportName) throws SQLException {
+        Connection conn = getMariaDBConnection();
+        Statement stmt = conn.createStatement();
+        String sql = "SELECT * from earnings_reports WHERE reportName='" + reportName
+                + "';";
+        return stmt.executeQuery(sql);
+    }
+
+
 
     private Connection getMariaDBConnection() throws SQLException {
         return DriverManager.getConnection(mariaDBConfig.getJdbcUrl(),
                 mariaDBConfig.getUsername(), mariaDBConfig.getPassword());
     }
-
-
-
 }
