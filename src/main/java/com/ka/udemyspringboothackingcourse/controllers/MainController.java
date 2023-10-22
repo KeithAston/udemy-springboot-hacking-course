@@ -5,16 +5,15 @@ import com.ka.udemyspringboothackingcourse.models.User;
 import com.ka.udemyspringboothackingcourse.services.BankingService;
 import com.ka.udemyspringboothackingcourse.services.CustomerLookupService;
 import com.ka.udemyspringboothackingcourse.services.DNSLookupService;
+import com.ka.udemyspringboothackingcourse.services.ReportsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -24,6 +23,7 @@ public class MainController {
     private BankingService bankingService;
     private DNSLookupService dnsLookupService;
     private CustomerLookupService customerLookupService;
+    private  ReportsService reportsService;
 
     //SQL Injection Endpoint
     @GetMapping("/balance/inquiry")
@@ -69,9 +69,9 @@ public class MainController {
     }
 
     //Broken Access Control Endpoint
-    @GetMapping("/earningsreport/{fileName}")
-    public ResponseEntity<String> getEarningsReport(@PathVariable("fileName") String fileName) {
-        return new ResponseEntity<>("Successfully retrieved report titled " + fileName, HttpStatus.OK);
+    @GetMapping("/earningsreport/{reportName}")
+    public ResponseEntity<String> getEarningsReport(@PathVariable("reportName") String reportName) {
+        return new ResponseEntity<>(reportsService.getEarningsReport(reportName), HttpStatus.OK);
     }
 
 
