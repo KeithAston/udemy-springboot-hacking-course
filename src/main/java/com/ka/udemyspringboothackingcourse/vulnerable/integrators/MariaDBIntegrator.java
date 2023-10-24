@@ -1,14 +1,15 @@
-package com.ka.udemyspringboothackingcourse.integrators;
+package com.ka.udemyspringboothackingcourse.vulnerable.integrators;
 
 import com.ka.udemyspringboothackingcourse.configuration.MariaDBConfig;
 import com.ka.udemyspringboothackingcourse.models.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
 
-@Service
+@Service("MariaDBIntegratorV1")
 @CommonsLog
 @AllArgsConstructor
 public class MariaDBIntegrator {

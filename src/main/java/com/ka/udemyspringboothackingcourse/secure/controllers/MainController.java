@@ -1,12 +1,13 @@
-package com.ka.udemyspringboothackingcourse.controllers;
+package com.ka.udemyspringboothackingcourse.secure.controllers;
 
-import com.ka.udemyspringboothackingcourse.helpers.MainHelper;
+import com.ka.udemyspringboothackingcourse.secure.helpers.MainHelper;
 import com.ka.udemyspringboothackingcourse.models.User;
-import com.ka.udemyspringboothackingcourse.services.BankingService;
-import com.ka.udemyspringboothackingcourse.services.CustomerLookupService;
-import com.ka.udemyspringboothackingcourse.services.DNSLookupService;
-import com.ka.udemyspringboothackingcourse.services.ReportsService;
+import com.ka.udemyspringboothackingcourse.secure.services.BankingService;
+import com.ka.udemyspringboothackingcourse.secure.services.CustomerLookupService;
+import com.ka.udemyspringboothackingcourse.secure.services.DNSLookupService;
+import com.ka.udemyspringboothackingcourse.secure.services.ReportsService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +16,19 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@RestController
-@RequestMapping("/api/v1")
+@RestController("MainControllerV2")
+@RequestMapping("/api/v2")
 @AllArgsConstructor
 public class MainController {
 
+    @Qualifier("BankingServiceV2")
     private BankingService bankingService;
+    @Qualifier("DNSLookupServiceV2")
     private DNSLookupService dnsLookupService;
+    @Qualifier("CustomerLookupServiceV2")
     private CustomerLookupService customerLookupService;
-    private  ReportsService reportsService;
+    @Qualifier("ReportsServiceV2")
+    private ReportsService reportsService;
 
     //SQL Injection Endpoint
     @GetMapping("/balance/inquiry")
