@@ -1,4 +1,4 @@
-package com.ka.udemyspringboothackingcourse.services;
+package com.ka.udemyspringboothackingcourse.secure.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Service("DNSLookupServiceV2")
 @AllArgsConstructor
 @CommonsLog
 public class DNSLookupService {

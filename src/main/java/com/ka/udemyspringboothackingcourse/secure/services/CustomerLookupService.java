@@ -1,21 +1,23 @@
-package com.ka.udemyspringboothackingcourse.services;
+package com.ka.udemyspringboothackingcourse.secure.services;
 
-import com.ka.udemyspringboothackingcourse.helpers.MainHelper;
-import com.ka.udemyspringboothackingcourse.integrators.MariaDBIntegrator;
+import com.ka.udemyspringboothackingcourse.secure.helpers.MainHelper;
+import com.ka.udemyspringboothackingcourse.secure.integrators.MariaDBIntegrator;
 import com.ka.udemyspringboothackingcourse.models.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Service
+@Service("CustomerLookupServiceV2")
 @CommonsLog
 @AllArgsConstructor
 public class CustomerLookupService {
 
+    @Qualifier("MariaDBIntegratorV2")
     private MariaDBIntegrator mariaDBIntegrator;
 
     public String getUser(List<String> cookies) {

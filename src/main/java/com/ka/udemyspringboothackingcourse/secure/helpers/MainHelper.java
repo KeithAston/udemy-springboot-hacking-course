@@ -1,4 +1,4 @@
-package com.ka.udemyspringboothackingcourse.helpers;
+package com.ka.udemyspringboothackingcourse.secure.helpers;
 
 public class MainHelper {
     public static final String BAD_CREDENTIALS = "Bad Credentials";

@@ -1,19 +1,21 @@
-package com.ka.udemyspringboothackingcourse.services;
+package com.ka.udemyspringboothackingcourse.vulnerable.services;
 
-import com.ka.udemyspringboothackingcourse.helpers.MainHelper;
-import com.ka.udemyspringboothackingcourse.integrators.MariaDBIntegrator;
+import com.ka.udemyspringboothackingcourse.vulnerable.helpers.MainHelper;
+import com.ka.udemyspringboothackingcourse.vulnerable.integrators.MariaDBIntegrator;
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Service
+@Service("ReportsServiceV1")
 @AllArgsConstructor
 @CommonsLog
 public class ReportsService {
 
+    @Qualifier("MariaDBIntegratorV1")
     private MariaDBIntegrator mariaDBIntegrator;
 
     public String getEarningsReport(String reportName){
