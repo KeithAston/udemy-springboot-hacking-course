@@ -33,15 +33,8 @@ public class MainController {
     //SQL Injection Endpoint
     @GetMapping("/balance/inquiry")
     public ResponseEntity<String> getBalance(@RequestParam("username") String username,
-                                            @RequestParam("password") String password) throws SQLException {
-        String response = bankingService.getBalance(username, password);
-        if (response.equals(MainHelper.BAD_CREDENTIALS)) {
-            return new ResponseEntity<>("Problem with provided credentials, please check and try again", HttpStatus.BAD_REQUEST);
-        } else if (response != null) {
-            return new ResponseEntity<>(bankingService.getBalance(username,password), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Something went wrong. Service temporarily unavailable", HttpStatus.SERVICE_UNAVAILABLE);
-        }
+                                            @RequestParam("password") String password) throws Exception {
+        return new ResponseEntity<>(bankingService.getBalance(username,password), HttpStatus.OK);
     }
 
     //Command Execution Endpoint
